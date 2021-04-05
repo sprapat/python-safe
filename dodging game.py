@@ -15,14 +15,18 @@ class Display:
         curses.curs_set(0)
     
     def create_border(self):
-        [self.addstr(y,0,'#') for y in range(11)]
-        [self.addstr(y,10,'#') for y in range(11)]
-        [self.addstr(0,x,'#') for x in range(11)]
-        [self.addstr(10,x,'#') for x in range(11)]
+        for y in range(11):
+            self.addstr(y,0,'#')
+            self.addstr(y,10,'#')
+        for x in range(11):
+            self.addstr(0,x,'#')
+            self.addstr(10,x,'#')
 
     def create_lanes(self):
-        [self.addstr(y,x,'|') for x in range(2,9,2) for y in range(1,8,2)]
-        [self.addstr(y+1,x,'|') for x in range(2,9,2) for y in range(1,8,2)]
+        for x in range(2,9,2):
+            for y in range(1,8,2):
+                self.addstr(y,x,'|')
+                self.addstr(y+1,x,'|')
 
     def display_character(self,x):
         self.addstr(9,x,'P')
@@ -50,7 +54,8 @@ class Display:
         self.refresh()
 
     def display_string_formula(self,word,y,x = 0):
-        [self.addstr(y,index+x,letter) for index,letter in enumerate(word)]
+        for index,letter in enumerate(word):
+            self.addstr(y,index+x,letter)
 
     def display_you_lose(self):
         self.display_string_formula('You lose, good day sir!',12)
@@ -62,7 +67,7 @@ class Display:
         self.addstr(4,13+len('Your score is:'),str(score))
 
     def display_result(self,result):
-        [self.addstr(5,index+12,letter) for index,letter in enumerate(str(result))]
+        display_string_formula(str(result),5,12)
 
     def display_level(self,level):
         self.display_string_formula('Your level is:',5,12)
@@ -100,7 +105,17 @@ class Obstacle:
         self.score = score
         self.game = game
         self.display = display
-        [self.get_speed_list(0.6 - self.score/10) if self.score <= 5 else self.get_speed_list(0.09 - (self.score - 6)/100) if self.score <= 14 else self.get_speed_list(0.01, 0.09 - (self.score - 24)/100) if self.score <= 23 else self.get_speed_list(0.01, 0.09 - (self.score - 24)/100) if self.score <= 33 else self.get_speed_list(0.01,0.01)]
+        #get the speed
+        if self.score <= 5:
+            self.get_speed_list(0.6 - self.score/10)
+        elif self.score <= 14:
+            self.get_speed_list(0.09 - (self.score - 6)/100)
+        elif self.score <= 23:
+            self.get_speed_list(0.01, 0.09 - (self.score - 24)/100)
+        elif self.score <= 33:
+            self.get_speed_list(0.01, 0.09 - (self.score - 24)/100)
+        else:
+            self.get_speed_list(0.01,0.01)
         self.last_timestamp = datetime.now()
         speed_timedelta = [timedelta(seconds = int(i)+0.1) for i in self.list]
         self.obs_lane = choice(self.X_CHOICE)
@@ -122,7 +137,8 @@ class Obstacle:
         return (self.obs_lane == character.get_current_x()) and (self.current_y == 9)
 
     def add_to_obs_position_list(self):
-        [self.game.add_to_obs_position_list(self.current_y,self.obs_lane) if self.current_y > 0 else '']
+        if self.current_y > 0:
+            self.game.add_to_obs_position_list(self.current_y,self.obs_lane)
 
     def update_score(self,new_score):
         self.score = new_score
@@ -133,6 +149,7 @@ class Obstacle:
                 self.list.append(element)
 
 class Game:
+    COOL_DOWN_TIMEDELTA = timedelta(seconds = 0.4)
     def __init__(self,stdscr):
         self.Point = namedtuple('Point', ['y', 'x'])
         self.display = Display(stdscr)
@@ -144,13 +161,13 @@ class Game:
         self.space_position = [self.Point(y,x) for y in range(1,10) for x in range(1,11,2)]
         self.remove = []
         self.level = 0
-        self.cool_down_timedelta = timedelta(seconds = 0.4)
+        self.last_timestamp_created_obs = datetime.now()
 
     def create_new_obs(self):
-        if not (datetime.now()-self.last_timestamp < self.cool_down_timedelta):
+        if not (datetime.now()-self.last_timestamp_created_obs < self.COOL_DOWN_TIMEDELTA):
             new_obs = Obstacle(self.display, self, self.level)
             self.obs_list.append(new_obs)
-            self.last_timestamp = datetime.now()
+            self.last_timestamp_created_obs = datetime.now()
 
     def setup_board(self):
         self.display.create_border()
@@ -163,7 +180,6 @@ class Game:
         self.character.display_character()
 
     def play(self):
-        self.last_timestamp = datetime.now()
         self.setup_board()
         while not self.is_hit():
             self.update_level()
@@ -171,12 +187,15 @@ class Game:
             self.display_score()
             self.character.move()
             #create new obstacle
-            [self.create_new_obs() if len(self.obs_list) <= self.level+4 else '']
+            if len(self.obs_list) <= self.level+4:
+                self.create_new_obs()
             #move all obstacle if the time hasn't arrive yet, the move will be skipped
-            [obs.move() for obs in self.obs_list]
+            for obs in self.obs_list:
+                obs.move()
             #add to the list to display
-            [obs.add_to_obs_position_list() for obs in self.obs_list]
-            [obs.update_score(self.level) for obs in self.obs_list]
+            for obs in self.obs_list:
+                obs.add_to_obs_position_list()
+                obs.update_score(self.level)
             #Display both the obstacle and the character. Display empty space every lane sqaure else.
             self.update_display()
             #Display "You lose, good day sir!"
@@ -194,7 +213,8 @@ class Game:
 
     def is_hit(self):
         for obs in self.obs_list: 
-            if obs.is_hit(self.character): return True
+            if obs.is_hit(self.character):
+                return True
         return False
 
     def remove_from_obs_list(self,element):
@@ -218,11 +238,13 @@ class Game:
         self.display_space()
 
     def display_obs(self):
-        [self.display.display_obs(item.y,item.x) for item in self.obs_position]
+        for item in self.obs_position:
+            self.display.display_obs(item.y,item.x)
         self.obs_position = []
 
     def display_space(self):
-        [self.display.clear(item.y,item.x) for item in self.space_position]
+        for item in self.space_position:
+            self.display.clear(item.y,item.x)
         #Reset the self.space_position to have all posible position using list comprehension
         self.space_position = [self.Point(y,x) for y in range(1,10) for x in range(1,11,2)]
 
