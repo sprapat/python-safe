@@ -68,7 +68,6 @@ class Card:
     SCORE = {'A': 11, 'J': 10, 'Q': 10, 'K': 10}
 
     def __init__(self, value, suit):
-        curses.echo()
         self.value = value
         self.suit = suit
         if value in 'AJQK':
@@ -390,3 +389,4 @@ def main(stdscr):
 
 if __name__ == '__main__':
     curses.wrapper(main)
+    curses.echo()
