@@ -12,13 +12,6 @@ class Display:
         self.value = None
         self.suit = None
 
-    def display(self, y, x, value, suit):
-        self.value = value
-        self.suit = suit
-        self.display_card_skeleton(y * 7, x * 7)
-        self.display_card_symbol(y * 7, x * 7)
-        self.refresh()
-
     def display_card_skeleton(self, y, x, symbol='#'):
         for a in range(6):
             self.stdscr.addstr(y, x + a, symbol)
@@ -64,12 +57,17 @@ class Display:
     def refresh(self):
         self.stdscr.refresh()
 
+    def display_card(self, y, x, card):
+        self.value =card.get_value()
+        self.suit = card.get_suit()
+        self.display_card_skeleton(y * 7, x * 7)
+        self.display_card_symbol(y * 7, x * 7)
+        self.refresh()
 
 class Card:
     SCORE = {'A': 11, 'J': 10, 'Q': 10, 'K': 10}
 
-    def __init__(self, value, suit, display):
-        self.Display = display
+    def __init__(self, value, suit):
         curses.echo()
         self.value = value
         self.suit = suit
@@ -81,18 +79,18 @@ class Card:
     def get_score(self):
         return self.score
 
+    def get_suit(self):
+        return self.suit
+
     def get_value(self):
         return self.value
-
-    def display(self, y, x):
-        self.Display.display(y, x, self.value, self.suit)
 
 
 class Deck:
     def __init__(self, display):
         value = map(str, ['A', 2, 3, 4, 5, 6, 7, 8, 9, 10, 'J', 'Q', 'K'])
         suit = ['C', 'H', 'S', 'D']
-        self.cards = [Card(v, s, display) for v in value for s in suit]
+        self.cards = [Card(v, s) for v in value for s in suit]
 
     def shuffle(self):
         random.shuffle(self.cards)
@@ -198,7 +196,8 @@ class Hand:
     def display_formula(self, a):
         for c in self.cards:
             if c not in self.already_displayed_set:
-                c.display(a, self.card_count)
+                #c.display(a, self.card_count)#1
+                self.Display.display_card(a, self.card_count, c)
                 self.card_count += 1
         for b in self.cards:
             self.already_displayed.append(b)
@@ -214,7 +213,8 @@ class Hand:
         self.test_for_player(self.name, '', 0)
 
     def display_one_card(self):
-        self.cards[0].display(0, 1)
+        # self.cards[0].display(0, 1)#1'
+        self.Display.display_card(0, 1, self.cards[0])
         self.card_count = 2
         self.already_displayed.append(self.cards[0])
         self.Display.display_card_skeleton(0, 14)
@@ -387,5 +387,6 @@ def main(stdscr):
     a = Game(stdscr)
     a.play()
     sleep(3)
+
 if __name__ == '__main__':
     curses.wrapper(main)
