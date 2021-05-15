@@ -87,7 +87,7 @@ class Card:
 
 
 class Deck:
-    def __init__(self, display):
+    def __init__(self):
         value = map(str, ['A', 2, 3, 4, 5, 6, 7, 8, 9, 10, 'J', 'Q', 'K'])
         suit = ['C', 'H', 'S', 'D']
         self.cards = [Card(v, s) for v in value for s in suit]
@@ -345,7 +345,7 @@ class Player:
 class Game:
     def __init__(self, stdscr):
         self.Display = Display(stdscr)
-        self.deck = Deck(self.Display)
+        self.deck = Deck()
         self.deck.shuffle()
         self.players = []
 
