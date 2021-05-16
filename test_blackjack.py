@@ -214,9 +214,13 @@ def test_equal_Player():
     comparing_object = Player('Player1', 'Deck_object', 'game_object')
     assert player_object == comparing_object
 
-def test_get_deck():
+def test_get_display():
     game_object = Game('stdscr')
     assert game_object.Display == game_object.get_display()
+
+def test_get_deck():
+    game_object = Game('stdscr')
+    assert game_object.deck == game_object.get_deck()
 
 def test_create_player():
     game_object = Game('stdscr')
