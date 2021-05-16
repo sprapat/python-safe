@@ -110,5 +110,10 @@ def test_is_busted():
     hand_object.cards = [Card('K','S'), Card('10','S'), Card('2','C')]
     assert hand_object.is_busted() == True
 
+def test_get_card():
+    hand_object = Hand('Player1', 'Player_object', 'None')
+    hand_object.add_card(Card('A','S'))
+    assert hand_object.get_card(0) == Card('A','S')
+
 
 
