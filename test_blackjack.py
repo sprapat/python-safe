@@ -120,5 +120,8 @@ def test_make_card():
     hand_object.make_card(Card('A','S'))
     assert hand_object.get_card(0) == Card('A','S')
 
-
+def test_get_card_value():
+    hand_object = Hand('Player1', 'Player_object', 'None')
+    hand_object.add_card(Card('A','S'))
+    assert hand_object.get_card_value(0) == 'A'
 
