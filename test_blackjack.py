@@ -1,4 +1,4 @@
-from Blackjack import Card, Deck, Hand, Player
+from Blackjack import Card, Deck, Hand, Player, Game
 from collections import deque
 
 # assert True == False
@@ -213,3 +213,14 @@ def test_equal_Player():
     player_object = Player('Player1', 'Deck_object', 'game_object')
     comparing_object = Player('Player1', 'Deck_object', 'game_object')
     assert player_object == comparing_object
+
+# def test_get_deck():
+#     card = Game('stdscr').get_deck().get_deck()
+#     assert all([a==b for a,b in zip(card, Deck().get_deck())])
+
+def test_create_player():
+    game_object = Game('stdscr')
+    player_object = Player('Player1', game_object.get_deck(), game_object)
+    assert game_object.create_player('Player1') == player_object
+
+
