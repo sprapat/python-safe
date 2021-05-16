@@ -113,25 +113,21 @@ class Hand:
         self.card_count = 1
         self.Display = display
         self.already_displayed = []
-        self.already_displayed_set = None
 
     def test_for_player(self, text1, text2, plus):
         if self.name == 'dealer':
             self.Display.display_text_with_y(plus, text1)
             self.Display.display_text_with_y(plus + 1, text2)
-        elif self.name == 'sp1':
-            self.Display.display_text_with_y(plus + 14, text1)
-            self.Display.display_text_with_y(plus + 14 + 1, text2)
-        elif self.name == 'sp2':
-            self.Display.display_text_with_y(plus + 21, text1)
-            self.Display.display_text_with_y(plus + 21 + 1, text2)
-        elif self.name == 'sp3':
-            self.Display.display_text_with_y(plus + 28, text1)
-            self.Display.display_text_with_y(plus + 28 + 1, text2)
-        elif self.name == 'player1':
-            self.Display.display_text_with_y(plus + 7, text1)
-            self.Display.display_text_with_y(plus + 8, text2)
-            self.Display.refresh()
+        self.test_for_player_formula('player1', text1, text2, plus, 1)
+        self.test_for_player_formula('sp1', text1, text2, plus, 2)
+        self.test_for_player_formula('sp2', text1, text2, plus, 3)
+        self.test_for_player_formula('sp3', text1, text2, plus, 4)
+        self.Display.refresh()
+
+    def test_for_player_formula(self, compare_text, text1, text2, plus, times):
+        if self.name == compare_text:
+            self.Display.display_text_with_y(plus + 7 * times, text1)
+            self.Display.display_text_with_y(plus + 1 + (7 * times), text2)
 
     def get_player(self):
         return self.player
@@ -175,7 +171,6 @@ class Hand:
         self.cards.append(card)
 
     def display_and_replace(self, y):
-        self.already_displayed_set = set(self.already_displayed)
         self.card_count = 2
         self.already_displayed.append(self.cards[0])
         self.Display.display_card_skeleton(y, 14, ' ')
@@ -187,7 +182,6 @@ class Hand:
         self.Display.display_text(y, 6, '>')
 
     def display(self):
-        self.already_displayed_set = set(self.already_displayed)
         if self.name == 'dealer':
             self.display_formula(0)
         elif self.name == 'sp1':
@@ -199,10 +193,16 @@ class Hand:
         elif self.name == 'player1':
             self.display_formula(1)
 
+    def check_in_list(self, list, element):
+        for e in list:
+            if e == element:
+                return True
+        return False
+
+
     def display_formula(self, a):
         for c in self.cards:
-            if c not in self.already_displayed_set:
-                #c.display(a, self.card_count)#1
+            if not self.check_in_list(self.already_displayed, c):
                 self.Display.display_card(a, self.card_count, c)
                 self.card_count += 1
         for b in self.cards:
@@ -219,7 +219,6 @@ class Hand:
         self.test_for_player(self.name, '', 0)
 
     def display_one_card(self):
-        # self.cards[0].display(0, 1)#1'
         self.Display.display_card(0, 1, self.cards[0])
         self.card_count = 2
         self.already_displayed.append(self.cards[0])
