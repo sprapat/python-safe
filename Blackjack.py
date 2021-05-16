@@ -71,9 +71,9 @@ class Card:
         self.value = value
         self.suit = suit
         if value in 'AJQK':
-            self.score = Card.SCORE[value]
+            self.score = Card.SCORE[self.value]
         else:
-            self.score = int(value)
+            self.score = int(self.value)
 
     def get_score(self):
         return self.score
@@ -85,9 +85,8 @@ class Card:
         return self.value
 
     def __eq__(self, other):
-        return (self.value == other. get_value()) and \
-            (self.suit == other.get_suit())
-
+        return (other != None) and (self.value == other. get_value()) and \
+            (self.suit == other.get_suit()) 
 
 class Deck:
     def __init__(self):
@@ -304,6 +303,9 @@ class Hand:
             return f'{other_hand.player.get_name()} won'
         else:
             return 'Tie'
+
+    def __eq__(self, other):
+        return (self.name == other.name) and (self.player == other.player) and (self.Display == other.Display)
 
 
 class Player:
