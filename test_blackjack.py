@@ -57,8 +57,13 @@ def test_shuffle():
 def test_get_player():
     assert Hand('Player1', 'Player_object', 'None').get_player() == 'Player_object'
 
-def test_get_player():
+def test_get_name():
     assert Hand('Player1', 'Player_object', 'None').get_name() == 'Player1'
+
+def test_add_card():
+    hand_object = Hand('Player1', 'Player_object', 'None')
+    hand_object.add_card(Card('A','S'))
+    assert hand_object.cards[0] == Card('A','S')
 
 
 
