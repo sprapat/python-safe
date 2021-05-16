@@ -28,6 +28,13 @@ def test_compare_card():
     assert Card('K','S') != Card('Q','S')
     assert Card('K','S') != Card('K','C')
 
+def test_draw():
+    deck_object = Deck()
+    for i in deck_object.draw(1):
+        print(i.get_value,i.get_score)
+    assert deck_object.draw(1)[0] == Card('A','C')
+   
+    
 def test_shuffle():
     deck_object = Deck()
     value = map(str, ['A', 2, 3, 4, 5, 6, 7, 8, 9, 10, 'J', 'Q', 'K'])
@@ -38,11 +45,9 @@ def test_shuffle():
     deck_object.shuffle()
     assert not all([a==b for a,b in zip(deck_object.get_deck(), cards)])
 
-
     # assert all(deck_object.get_deck() == cards)
     # assert deck_object.shuffle() != cards
 
-def test_draw():
-    Deck().draw(1)
+
 
 
