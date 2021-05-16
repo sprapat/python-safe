@@ -364,6 +364,9 @@ class Game:
     def get_deck(self):
         return self.deck
 
+    def get_display(self):
+        return self.Display
+
     def create_player(self, player_name):
         a_player = Player(player_name, self.deck, self)
         self.players.append(a_player)
