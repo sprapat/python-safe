@@ -65,6 +65,12 @@ def test_add_card():
     hand_object.add_card(Card('A','S'))
     assert hand_object.cards[0] == Card('A','S')
 
+def test_Hand_draw():
+    hand_object = Hand('Player1', 'Player_object', 'None')
+    hand_object.draw(Deck(), 1)
+    assert hand_object.cards[0] == Card('A','C')
+
+
 
 
 
