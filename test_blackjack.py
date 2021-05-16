@@ -1,4 +1,5 @@
 from Blackjack import Card, Deck, Hand, Player
+from collections import deque
 
 # assert True == False
 def test_get_value():
@@ -177,3 +178,11 @@ def test_get_all_hands():
     player_object.create_hand('Player1', 'display_object')
     player_object.create_hand('Dealer', 'display_object')
     assert player_object.get_all_hands()[0] == Hand('Player1', player_object, 'display_object')
+
+def test_add_hand_to_play_queue():
+    player_object = Player('Player1', Deck(), 'Game_object')
+    player_object.create_hand('Player1', 'display_object')
+    player_object.queue = deque(player_object.hands)
+    hand = Hand('Dealer', player_object, 'display_object')
+    player_object.add_hand_to_play_queue(hand)
+    assert len(player_object.queue) == 2
