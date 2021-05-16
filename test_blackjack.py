@@ -1,4 +1,4 @@
-from Blackjack import Card, Deck, Hand
+from Blackjack import Card, Deck, Hand, Player
 
 # assert True == False
 def test_get_value():
@@ -133,4 +133,30 @@ def test_splittable():
     assert hand_object.splittable() == False
     hand_object.cards = [Card('A', 'S'), Card('A', 'C'), Card('A', 'D')]
     assert hand_object.splittable() == False
+
+# def test_decide():
+#     hand_object = Hand('Player1', 'Player_object', 'None')
+#     other_hand_object = Hand('Dealer', 'Dealer_object', 'None')
+#     hand_object.cards = [Card('A','S'), Card('J','S')]
+#     other_hand_object.cards = [Card('A','S'), Card('10','S')]
+#     assert hand_object.decide(other_hand_object) == 'Tie'
+#     hand_object.cards = [Card('A','S'), Card('J','S')]
+#     other_hand_object.cards = [Card('2','S'), Card('10','S')]
+#     assert hand_object.decide(other_hand_object) == f'Player_ won'
+
+def test_Hand_equal():
+    hand_object = Hand('Player1', 'Player_object', 'None')
+    comparing_object = Hand('Player', 'Player_object', 'None')
+    assert not hand_object == comparing_object
+    hand_object = Hand('Player1', 'Player_object', 'None')
+    comparing_object = Hand('Player1', 'Player_objec', 'None')
+    assert not hand_object == comparing_object
+    hand_object = Hand('Player1', 'Player_object', 'None')
+    comparing_object = Hand('Player1', 'Player_object', 'Non')
+    assert not hand_object == comparing_object
+    hand_object = Hand('Player1', 'Player_object', 'None')
+    comparing_object = Hand('Player1', 'Player_object', 'None')
+    assert hand_object == comparing_object
+
+
 
