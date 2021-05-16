@@ -1,26 +1,37 @@
-from Blackjack import Card, Deck
+from Blackjack import Card, Deck, Hand
 
-
-def test_card():
+# assert True == False
+def test_get_value():
     card_object = Card('K','S')
     assert card_object.get_value() == 'K'
-    assert card_object.get_suit() == 'S'
-    assert card_object.get_score() == 10
     card_object = Card('Q','S')
     assert card_object.get_value() == 'Q'
-    assert card_object.get_suit() == 'S'
-    assert card_object.get_score() == 10
     card_object = Card('J','S')
     assert card_object.get_value() == 'J'
-    assert card_object.get_suit() == 'S'
-    assert card_object.get_score() == 10
     card_object = Card('A','S')
     assert card_object.get_value() == 'A'
-    assert card_object.get_suit() == 'S'
-    assert card_object.get_score() == 11
     card_object = Card('5','S')
     assert card_object.get_value() == '5'
+
+def test_get_suit():
+    card_object = Card('K','C')
+    assert card_object.get_suit() == 'C'
+    card_object = Card('K','H')
+    assert card_object.get_suit() == 'H'
+    card_object = Card('K','S')
     assert card_object.get_suit() == 'S'
+    card_object = Card('K','D')
+    assert card_object.get_suit() == 'D'
+def test_get_score():
+    card_object = Card('K','S')
+    assert card_object.get_score() == 10
+    card_object = Card('Q','S')
+    assert card_object.get_score() == 10
+    card_object = Card('J','S')
+    assert card_object.get_score() == 10
+    card_object = Card('A','S')
+    assert card_object.get_score() == 11
+    card_object = Card('5','S')
     assert card_object.get_score() == 5
 
 def test_compare_card():
@@ -30,10 +41,8 @@ def test_compare_card():
 
 def test_draw():
     deck_object = Deck()
-    for i in deck_object.draw(1):
-        print(i.get_value,i.get_score)
-    assert deck_object.draw(1)[0] == Card('A','C')
-   
+    # print(deck_object.draw(4))
+    assert all([a==b for a,b in zip(deck_object.draw(4), [Card('A','C'), Card('A','H'), Card('A','S'), Card('A','D')])])
     
 def test_shuffle():
     deck_object = Deck()
@@ -45,9 +54,8 @@ def test_shuffle():
     deck_object.shuffle()
     assert not all([a==b for a,b in zip(deck_object.get_deck(), cards)])
 
-    # assert all(deck_object.get_deck() == cards)
-    # assert deck_object.shuffle() != cards
-
+def test_get_player():
+    assert Hand('Player1', 'Player_object', 'None').get_player() == 'Player_object'
 
 
 
