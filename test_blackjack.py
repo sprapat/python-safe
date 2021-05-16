@@ -112,16 +112,25 @@ def test_is_busted():
 
 def test_get_card():
     hand_object = Hand('Player1', 'Player_object', 'None')
-    hand_object.add_card(Card('A','S'))
-    assert hand_object.get_card(0) == Card('A','S')
+    hand_object.add_card(Card('A', 'S'))
+    assert hand_object.get_card(0) == Card('A', 'S')
 
 def test_make_card():
     hand_object = Hand('Player1', 'Player_object', 'None')
-    hand_object.make_card(Card('A','S'))
+    hand_object.make_card(Card('A', 'S'))
     assert hand_object.get_card(0) == Card('A','S')
 
 def test_get_card_value():
     hand_object = Hand('Player1', 'Player_object', 'None')
-    hand_object.add_card(Card('A','S'))
+    hand_object.add_card(Card('A', 'S'))
     assert hand_object.get_card_value(0) == 'A'
+
+def test_splittable():
+    hand_object = Hand('Player1', 'Player_object', 'None')
+    hand_object.cards = [Card('A', 'S'), Card('A', 'C')]
+    assert hand_object.splittable() == True
+    hand_object.cards = [Card('A', 'S'), Card('2', 'C')]
+    assert hand_object.splittable() == False
+    hand_object.cards = [Card('A', 'S'), Card('A', 'C'), Card('A', 'D')]
+    assert hand_object.splittable() == False
 
