@@ -361,6 +361,9 @@ class Game:
         self.deck.shuffle()
         self.players = []
 
+    def get_deck(self):
+        return self.deck
+
     def create_player(self, player_name):
         a_player = Player(player_name, self.deck, self)
         self.players.append(a_player)
