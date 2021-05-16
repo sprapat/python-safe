@@ -171,3 +171,9 @@ def test_get_hand():
     player_object = Player('Player1', Deck(), 'Game_object')
     player_object.create_hand('Player1', 'display_object')
     assert player_object.get_hand() == Hand('Player1', player_object, 'display_object')
+
+def test_get_all_hands():
+    player_object = Player('Player1', Deck(), 'Game_object')
+    player_object.create_hand('Player1', 'display_object')
+    player_object.create_hand('Dealer', 'display_object')
+    assert player_object.get_all_hands()[0] == Hand('Player1', player_object, 'display_object')
