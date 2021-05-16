@@ -223,4 +223,8 @@ def test_create_player():
     player_object = Player('Player1', game_object.get_deck(), game_object)
     assert game_object.create_player('Player1') == player_object
 
-
+def test_get_player():
+    game_object = Game('stdscr')
+    player_object = Player('Player1', game_object.get_deck(), game_object)
+    game_object.create_player('Player1')
+    assert game_object.get_player('Player1') == player_object
