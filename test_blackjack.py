@@ -199,3 +199,17 @@ def test_add_hand_to_play_queue():
     hand = Hand('Dealer', player_object, 'display_object')
     player_object.add_hand_to_play_queue(hand)
     assert len(player_object.queue) == 2
+
+def test_equal_Player():
+    player_object = Player('Player1', 'Deck_object', 'game_object')
+    comparing_object = Player('Player', 'Deck_object', 'game_object')
+    assert not player_object == comparing_object
+    player_object = Player('Player1', 'Deck_object', 'game_object')
+    comparing_object = Player('Player1', 'Deck_objec', 'game_object')
+    assert not player_object == comparing_object
+    player_object = Player('Player1', 'Deck_object', 'game_object')
+    comparing_object = Player('Player1', 'Deck_object', 'game_objec')
+    assert not player_object == comparing_object
+    player_object = Player('Player1', 'Deck_object', 'game_object')
+    comparing_object = Player('Player1', 'Deck_object', 'game_object')
+    assert player_object == comparing_object

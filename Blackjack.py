@@ -350,6 +350,9 @@ class Player:
             for hand in player.hands:
                 hand.show_player()
 
+    def __eq__(self, other):
+        return (self.name == other.name) and (self.deck == other.deck) and (self.game == other.game)
+
 
 class Game:
     def __init__(self, stdscr):
