@@ -57,6 +57,9 @@ def test_shuffle():
 def test_get_player():
     assert Hand('Player1', 'Player_object', 'None').get_player() == 'Player_object'
 
+def test_get_player():
+    assert Hand('Player1', 'Player_object', 'None').get_name() == 'Player1'
+
 
 
 
