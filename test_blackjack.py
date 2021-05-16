@@ -71,7 +71,6 @@ def test_Hand_draw():
     hand_object.draw(Deck(), 1)
     assert hand_object.cards[0] == Card('A','C')
 
-
 def test_get_score():
     hand_object = Hand('Player1', 'Player_object', 'None')
     hand_object.cards = [Card('A','S'), Card('10','S')]
@@ -135,6 +134,10 @@ def test_splittable():
     hand_object.cards = [Card('A', 'S'), Card('A', 'C'), Card('A', 'D')]
     assert hand_object.splittable() == False
 
+def test_check_in_list():
+    list = ['a','b','c']
+    assert Hand('Player1', 'Player_object', 'None').check_in_list(list, 'a') == True
+    assert Hand('Player1', 'Player_object', 'None').check_in_list(list, 'd') == False
 def test_decide():
     player_object = Player('Player1', Deck(), 'Game_object')
     dealer_object = Player('Dealer', Deck(), 'Game_object')
