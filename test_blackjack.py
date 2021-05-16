@@ -95,6 +95,20 @@ def test_is_blackjack():
     hand_object.cards = [Card('A','S'), Card('2','S')]
     assert hand_object.is_blackjack() == False
 
+def test_is_busted():
+    hand_object = Hand('Player1', 'Player_object', 'None')
+    hand_object.cards = [Card('A','S'), Card('10','S')]
+    assert hand_object.is_busted() == False
+    hand_object.cards = [Card('A','S'), Card('J','S')]
+    assert hand_object.is_busted() == False
+    hand_object.cards = [Card('A','S'), Card('Q','S')]
+    assert hand_object.is_busted() == False
+    hand_object.cards = [Card('A','S'), Card('K','S')]
+    assert hand_object.is_busted() == False
+    hand_object.cards = [Card('A','S'), Card('10','S'), Card('A','C')]
+    assert hand_object.is_busted() == False
+    hand_object.cards = [Card('K','S'), Card('10','S'), Card('2','C')]
+    assert hand_object.is_busted() == True
 
 
 
