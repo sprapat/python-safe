@@ -78,8 +78,22 @@ def test_get_score():
     hand_object.cards = [Card('A','S'), Card('10','S'), Card('A','C')]
     assert hand_object.get_score() == 12
 
-
-
+def test_is_blackjack():
+    hand_object = Hand('Player1', 'Player_object', 'None')
+    hand_object.cards = [Card('A','S'), Card('10','S')]
+    assert hand_object.is_blackjack() == True
+    hand_object.cards = [Card('A','S'), Card('J','S')]
+    assert hand_object.is_blackjack() == True
+    hand_object.cards = [Card('A','S'), Card('Q','S')]
+    assert hand_object.is_blackjack() == True
+    hand_object.cards = [Card('A','S'), Card('K','S')]
+    assert hand_object.is_blackjack() == True
+    hand_object.cards = [Card('A','S'), Card('10','S'), Card('A','C')]
+    assert hand_object.is_blackjack() == False
+    hand_object.cards = [Card('2','S'), Card('10','S')]
+    assert hand_object.is_blackjack() == False
+    hand_object.cards = [Card('A','S'), Card('2','S')]
+    assert hand_object.is_blackjack() == False
 
 
 
