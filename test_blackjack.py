@@ -71,6 +71,15 @@ def test_Hand_draw():
     assert hand_object.cards[0] == Card('A','C')
 
 
+def test_get_score():
+    hand_object = Hand('Player1', 'Player_object', 'None')
+    hand_object.cards = [Card('A','S'), Card('10','S')]
+    assert hand_object.get_score() == 21
+    hand_object.cards = [Card('A','S'), Card('10','S'), Card('A','C')]
+    assert hand_object.get_score() == 12
+
+
+
 
 
 
