@@ -135,15 +135,29 @@ def test_splittable():
     hand_object.cards = [Card('A', 'S'), Card('A', 'C'), Card('A', 'D')]
     assert hand_object.splittable() == False
 
-# def test_decide():
-#     hand_object = Hand('Player1', 'Player_object', 'None')
-#     other_hand_object = Hand('Dealer', 'Dealer_object', 'None')
-#     hand_object.cards = [Card('A','S'), Card('J','S')]
-#     other_hand_object.cards = [Card('A','S'), Card('10','S')]
-#     assert hand_object.decide(other_hand_object) == 'Tie'
-#     hand_object.cards = [Card('A','S'), Card('J','S')]
-#     other_hand_object.cards = [Card('2','S'), Card('10','S')]
-#     assert hand_object.decide(other_hand_object) == f'Player_ won'
+def test_decide():
+    player_object = Player('Player1', Deck(), 'Game_object')
+    dealer_object = Player('Dealer', Deck(), 'Game_object')
+    hand_object = Hand('Player1', player_object, 'None')
+    other_hand_object = Hand('Dealer', dealer_object, 'None')
+    hand_object.cards = [Card('A','S'), Card('J','S')]
+    other_hand_object.cards = [Card('A','S'), Card('10','S')]
+    assert hand_object.decide(other_hand_object) == 'Tie'
+    hand_object.cards = [Card('A','S'), Card('J','S')]
+    other_hand_object.cards = [Card('2','S'), Card('10','S')]
+    assert hand_object.decide(other_hand_object) == f'{player_object.get_name()} won'
+    hand_object.cards = [Card('2','S'), Card('10','S')]
+    other_hand_object.cards = [Card('A','S'), Card('J','S')]
+    assert hand_object.decide(other_hand_object) == f'{dealer_object.get_name()} won'
+    hand_object.cards = [Card('3','S'), Card('J','S')]
+    other_hand_object.cards = [Card('2','S'), Card('10','S')]
+    assert hand_object.decide(other_hand_object) == f'{player_object.get_name()} won'
+    hand_object.cards = [Card('2','S'), Card('10','S')]
+    other_hand_object.cards = [Card('3','S'), Card('J','S')]
+    assert hand_object.decide(other_hand_object) == f'{dealer_object.get_name()} won'
+    hand_object.cards = [Card('5','D'), Card('J','S')]
+    other_hand_object.cards = [Card('5','S'), Card('10','S')]
+    assert hand_object.decide(other_hand_object) == 'Tie'
 
 def test_Hand_equal():
     hand_object = Hand('Player1', 'Player_object', 'None')
@@ -162,7 +176,6 @@ def test_Hand_equal():
 def test_get_name():
     player_object  = Player('Player1', "Deck()", 'game_object')
     assert player_object.get_name() == 'Player1' 
-
 
 def test_create_hand():
     player_object = Player('Player1', Deck(), 'Game_object')
