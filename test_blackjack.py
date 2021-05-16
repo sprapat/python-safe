@@ -158,5 +158,16 @@ def test_Hand_equal():
     comparing_object = Hand('Player1', 'Player_object', 'None')
     assert hand_object == comparing_object
 
+def test_get_name():
+    player_object  = Player('Player1', "Deck()", 'game_object')
+    assert player_object.get_name() == 'Player1' 
 
 
+def test_create_hand():
+    player_object = Player('Player1', Deck(), 'Game_object')
+    assert player_object.create_hand('Player1', 'display_object') == Hand('Player1', player_object, 'display_object')
+
+def test_get_hand():
+    player_object = Player('Player1', Deck(), 'Game_object')
+    player_object.create_hand('Player1', 'display_object')
+    assert player_object.get_hand() == Hand('Player1', player_object, 'display_object')
