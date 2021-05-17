@@ -193,23 +193,24 @@ def test_get_name():
 
 def test_create_hand():
     player_object = Player('Player1')
-    assert player_object.create_hand('Player1', 'display_object') == Hand(player_object, 'display_object')
+    assert player_object.create_hand('display_object') == Hand(player_object, 'display_object')
 
 def test_get_hand():
     player_object = Player('Player1')
-    player_object.create_hand('Player1', 'display_object')
+    player_object.create_hand('display_object')
     assert player_object.get_hand() == Hand(player_object, 'display_object')
 
 def test_get_all_hands():
     player_object = Player('Player1')
-    player_object.create_hand('Player1', 'display_object')
-    player_object.create_hand('Dealer', 'display_object')
+    dealer_object = Player('Dealer')
+    player_object.create_hand('display_object')
+    dealer_object.create_hand('display_object')
     assert player_object.get_all_hands()[0] == Hand(player_object, 'display_object')
 
 def test_add_hand_to_play_queue():
     player_object = Player('Player1')
     dealer_object = Player('Dealer')
-    player_object.create_hand('Player1', 'display_object')
+    player_object.create_hand('display_object')
     player_object.queue = deque(player_object.hands)
     hand = Hand(dealer_object, 'display_object')
     player_object.add_hand_to_play_queue(hand)

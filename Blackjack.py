@@ -311,7 +311,6 @@ class Player:
         self.name = player_name
         self.hands = []
         self.queue = None
-        # self.game = game
         self.counter = 1
         self.a_hand = None
 
@@ -321,7 +320,7 @@ class Player:
     def get_value(self, index, card):
         self.hands[index].get_value(card)
 
-    def create_hand(self, name, display):
+    def create_hand(self, display):
         self.a_hand = Hand(self, display)
         self.hands.append(self.a_hand)
         return self.a_hand
@@ -377,7 +376,7 @@ class Game:
 
     def initialize_player(self, player_name):
         a_player = self.create_player(player_name)
-        a_player_hand = a_player.create_hand(player_name, self.display_object)
+        a_player_hand = a_player.create_hand(self.display_object)
         a_player_hand.draw(self.deck, 2)
         return a_player, a_player_hand
 
