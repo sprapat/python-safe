@@ -119,14 +119,14 @@ class Hand:
         self.player.show_all_players(game)
         if self.name == 'dealer':
             self.arrow(3)
+        elif self.name == 'player1':
+            self.arrow(10)
         elif self.name == 'sp1':
             self.arrow(17)
         elif self.name == 'sp2':
             self.arrow(24)
         elif self.name == 'sp3':
             self.arrow(31)
-        elif self.name == 'player1':
-            self.arrow(10)
         while not (self.is_busted()) and not (self.is_blackjack()):
             self.display()
             self.display_object.display_text_times_seven(5, 'want to draw?')
@@ -160,7 +160,6 @@ class Hand:
         first_card, second_card = self.cards
         new_hand = Player('sp' + str(self.player.get_counter())).create_hand(self.display_object)
         self.player.hands.append(new_hand)
-        # self.player.counter += 1
         if self.name == 'dealer':
             self.display_and_replace(0)
         elif self.name == 'player1':
