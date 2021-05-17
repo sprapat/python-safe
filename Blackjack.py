@@ -9,8 +9,6 @@ class Display:
 
     def __init__(self, stdscr):
         self.stdscr = stdscr
-        self.value = None
-        self.suit = None
 
     def display_card_skeleton(self, y, x, symbol='#'):
         for a in range(6):
