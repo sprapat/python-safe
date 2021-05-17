@@ -1,5 +1,10 @@
-from Blackjack import Card, Deck, Hand, Player, Game
 from collections import deque
+from package.Card import Card
+from package.Deck import Deck
+from package.Hand import Hand
+from package.Player import Player
+from package.Game import Game
+
 
 # assert True == False
 def test_get_value():
