@@ -56,10 +56,8 @@ class Display:
         self.stdscr.refresh()
 
     def display_card(self, y, x, card):
-        value =card.get_value()
-        suit = card.get_suit()
         self.display_card_skeleton(y * 7, x * 7)
-        self.display_card_symbol(y * 7, x * 7, value, suit)
+        self.display_card_symbol(y * 7, x * 7, card.get_value(), card.get_suit())
         self.refresh()
 
 class Card:
