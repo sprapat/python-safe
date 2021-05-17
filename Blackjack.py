@@ -263,8 +263,8 @@ class Hand:
         return (len(self.cards) == 2) and (self.get_card_value(0) == self.get_card_value(1))
 
     def split(self):
-        # if not self.splittable():
-        #     return
+        if not self.splittable():
+            return
         first_card, second_card = self.cards
         new_hand = Player('sp' + str(self.player.counter)).create_hand(self.display_object)
         self.player.hands.append(new_hand)
