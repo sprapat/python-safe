@@ -8,15 +8,14 @@ class Player:
         self.hands = []
         self.queue = None
         self.counter = 1
-        self.a_hand = None
 
     def get_name(self):
         return self.name
 
     def create_hand(self, display):
-        self.a_hand = Hand(self, display)
-        self.hands.append(self.a_hand)
-        return self.a_hand
+        a_hand = Hand(self, display)
+        self.hands.append(a_hand)
+        return a_hand
 
     def get_hand(self):
         for hand in self.hands:
