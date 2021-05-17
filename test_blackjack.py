@@ -139,8 +139,8 @@ def test_check_in_list():
     assert Hand('Player1', 'Player_object', 'None').check_in_list(list, 'a') == True
     assert Hand('Player1', 'Player_object', 'None').check_in_list(list, 'd') == False
 def test_decide():
-    player_object = Player('Player1', Deck(), 'Game_object')
-    dealer_object = Player('Dealer', Deck(), 'Game_object')
+    player_object = Player('Player1', 'Game_object')
+    dealer_object = Player('Dealer', 'Game_object')
     hand_object = Hand('Player1', player_object, 'None')
     other_hand_object = Hand('Dealer', dealer_object, 'None')
     hand_object.cards = [Card('A','S'), Card('J','S')]
@@ -177,26 +177,26 @@ def test_Hand_equal():
     assert hand_object == comparing_object
 
 def test_get_name():
-    player_object  = Player('Player1', "Deck()", 'game_object')
+    player_object  = Player('Player1', 'game_object')
     assert player_object.get_name() == 'Player1' 
 
 def test_create_hand():
-    player_object = Player('Player1', Deck(), 'Game_object')
+    player_object = Player('Player1', 'Game_object')
     assert player_object.create_hand('Player1', 'display_object') == Hand('Player1', player_object, 'display_object')
 
 def test_get_hand():
-    player_object = Player('Player1', Deck(), 'Game_object')
+    player_object = Player('Player1', 'Game_object')
     player_object.create_hand('Player1', 'display_object')
     assert player_object.get_hand() == Hand('Player1', player_object, 'display_object')
 
 def test_get_all_hands():
-    player_object = Player('Player1', Deck(), 'Game_object')
+    player_object = Player('Player1', 'Game_object')
     player_object.create_hand('Player1', 'display_object')
     player_object.create_hand('Dealer', 'display_object')
     assert player_object.get_all_hands()[0] == Hand('Player1', player_object, 'display_object')
 
 def test_add_hand_to_play_queue():
-    player_object = Player('Player1', Deck(), 'Game_object')
+    player_object = Player('Player1', 'Game_object')
     player_object.create_hand('Player1', 'display_object')
     player_object.queue = deque(player_object.hands)
     hand = Hand('Dealer', player_object, 'display_object')
@@ -204,22 +204,19 @@ def test_add_hand_to_play_queue():
     assert len(player_object.queue) == 2
 
 def test_equal_Player():
-    player_object = Player('Player1', 'Deck_object', 'game_object')
-    comparing_object = Player('Player', 'Deck_object', 'game_object')
+    player_object = Player('Player1', 'game_object')
+    comparing_object = Player('Player', 'game_object')
     assert not player_object == comparing_object
-    player_object = Player('Player1', 'Deck_object', 'game_object')
-    comparing_object = Player('Player1', 'Deck_objec', 'game_object')
+    player_object = Player('Player1', 'game_object')
+    comparing_object = Player('Player1', 'game_objec')
     assert not player_object == comparing_object
-    player_object = Player('Player1', 'Deck_object', 'game_object')
-    comparing_object = Player('Player1', 'Deck_object', 'game_objec')
-    assert not player_object == comparing_object
-    player_object = Player('Player1', 'Deck_object', 'game_object')
-    comparing_object = Player('Player1', 'Deck_object', 'game_object')
+    player_object = Player('Player1', 'game_object')
+    comparing_object = Player('Player1', 'game_object')
     assert player_object == comparing_object
 
 def test_get_display():
     game_object = Game('stdscr')
-    assert game_object.Display == game_object.get_display()
+    assert game_object.display_object == game_object.get_display()
 
 def test_get_deck():
     game_object = Game('stdscr')
@@ -227,18 +224,18 @@ def test_get_deck():
 
 def test_create_player():
     game_object = Game('stdscr')
-    player_object = Player('Player1', game_object.get_deck(), game_object)
+    player_object = Player('Player1', game_object)
     assert game_object.create_player('Player1') == player_object
 
 def test_get_player():
     game_object = Game('stdscr')
-    player_object = Player('Player1', game_object.get_deck(), game_object)
+    player_object = Player('Player1', game_object)
     game_object.create_player('Player1')
     assert game_object.get_player('Player1') == player_object
 
 def test_initualize_player():
     game_object = Game('stdscr')
-    player_object = Player('Player1', game_object.get_deck(), game_object)
+    player_object = Player('Player1', game_object)
     hand_object = Hand('Player1', player_object, game_object.get_display())
     p, h = game_object.initialize_player('Player1')
     assert p == player_object

@@ -111,23 +111,22 @@ class Hand:
         self.name = name
         self.player = player
         self.card_count = 1
-        self.Display = display
+        self.display_object = display
         self.already_displayed = []
 
-    def test_for_player(self, text1, text2, plus):
-        if self.name == 'dealer':
-            self.Display.display_text_with_y(plus, text1)
-            self.Display.display_text_with_y(plus + 1, text2)
-        self.test_for_player_formula('player1', text1, text2, plus, 1)
-        self.test_for_player_formula('sp1', text1, text2, plus, 2)
-        self.test_for_player_formula('sp2', text1, text2, plus, 3)
-        self.test_for_player_formula('sp3', text1, text2, plus, 4)
-        self.Display.refresh()
+    def display_text(self, text1, text2, plus):
+        self.display_text_formula('dealer', text1, text2, plus, 0)
+        self.display_text_formula('player1', text1, text2, plus, 7)
+        self.display_text_formula('sp1', text1, text2, plus, 14)
+        self.display_text_formula('sp2', text1, text2, plus, 21)
+        self.display_text_formula('sp3', text1, text2, plus, 28)
+        if __name__ == '__main__':
+            self.display_object.refresh()
 
-    def test_for_player_formula(self, compare_text, text1, text2, plus, times):
+    def display_text_formula(self, compare_text, text1, text2, plus, times):
         if self.name == compare_text:
-            self.Display.display_text_with_y(plus + 7 * times, text1)
-            self.Display.display_text_with_y(plus + 1 + (7 * times), text2)
+            self.display_object.display_text_with_y(plus + times, text1)
+            self.display_object.display_text_with_y(plus + 1 +  times, text2)
 
     def get_player(self):
         return self.player
@@ -143,7 +142,7 @@ class Hand:
             return False
         scores = [c.get_score() for c in self.cards]
         if sorted(scores) == [10, 11]:
-            self.test_for_player('Black', 'jack', 2)
+            self.display_text('Black', 'jack', 2)
             return True
         return False
 
@@ -153,7 +152,7 @@ class Hand:
         for c in self.cards:
             if c.get_value() == 'A' and sum_score > 21:
                 sum_score -= 10
-        self.test_for_player(str(sum_score), '', 4)
+        self.display_text(str(sum_score), '', 4)
         return sum_score if sum_score <= 21 else -999
 
     def get_card_value(self, card_idx):
@@ -161,7 +160,7 @@ class Hand:
 
     def is_busted(self):
         if self.get_score() < 0:
-            self.test_for_player('Busted', '', 5)
+            self.display_text('Busted', '', 5)
         return self.get_score() < 0
 
     def get_card(self, index):
@@ -173,13 +172,13 @@ class Hand:
     def display_and_replace(self, y):
         self.card_count = 2
         self.already_displayed.append(self.cards[0])
-        self.Display.display_card_skeleton(y, 14, ' ')
-        self.Display.clear_card_symbol(y, 14)
+        self.display_object.display_card_skeleton(y, 14, ' ')
+        self.display_object.clear_card_symbol(y, 14)
 
     def arrow(self, y):
         for x in range(6):
-            self.Display.display_text(y, x, '-')
-        self.Display.display_text(y, 6, '>')
+            self.display_object.display_text(y, x, '-')
+        self.display_object.display_text(y, 6, '>')
 
     def display(self):
         if self.name == 'dealer':
@@ -203,7 +202,7 @@ class Hand:
     def display_formula(self, a):
         for c in self.cards:
             if not self.check_in_list(self.already_displayed, c):
-                self.Display.display_card(a, self.card_count, c)
+                self.display_object.display_card(a, self.card_count, c)
                 self.card_count += 1
         for b in self.cards:
             self.already_displayed.append(b)
@@ -213,16 +212,16 @@ class Hand:
         y_list = [3, 10, 17, 24, 32]
         for y in y_list:
             for x in range(7):
-                self.Display.display_text(y, x, ' ')
+                self.display_object.display_text(y, x, ' ')
 
     def show_player(self):
-        self.test_for_player(self.name, '', 0)
+        self.display_text(self.name, '', 0)
 
     def display_one_card(self):
-        self.Display.display_card(0, 1, self.cards[0])
+        self.display_object.display_card(0, 1, self.cards[0])
         self.card_count = 2
         self.already_displayed.append(self.cards[0])
-        self.Display.display_card_skeleton(0, 14)
+        self.display_object.display_card_skeleton(0, 14)
 
     def play(self, deck):
         self.player.show_all_players()
@@ -238,11 +237,11 @@ class Hand:
             self.arrow(10)
         while not (self.is_busted()) and not (self.is_blackjack()):
             self.display()
-            self.Display.display_text_times_seven(5, 'want to draw?')
+            self.display_object.display_text_times_seven(5, 'want to draw?')
             self.get_score()
-            b = self.Display.getstr(35, 14)
+            b = self.display_object.getstr(35, 14)
             draw_or_not = b.decode('utf-8')
-            self.Display.display_text(35, 14, ' ')
+            self.display_object.display_text(35, 14, ' ')
             if draw_or_not == 'y':
                 self.draw(deck, 1)
             if draw_or_not == 'd':
@@ -269,7 +268,7 @@ class Hand:
         first_card, second_card = self.cards
         self.cards = [first_card]
         self.already_displayed.remove(second_card)
-        new_hand = self.player.create_hand('sp' + str(self.player.counter), self.Display)
+        new_hand = self.player.create_hand('sp' + str(self.player.counter), self.display_object)
         self.player.counter += 1
         if self.name == 'dealer':
             self.display_and_replace(7 * 0)
@@ -304,14 +303,13 @@ class Hand:
             return 'Tie'
 
     def __eq__(self, other):
-        return (self.name == other.name) and (self.player == other.player) and (self.Display == other.Display)
+        return (self.name == other.name) and (self.player == other.player) and (self.display_object == other.display_object)
 
 
 class Player:
-    def __init__(self, player_name, deck, game):
+    def __init__(self, player_name, game):
         self.name = player_name
         self.hands = []
-        self.deck = deck
         self.queue = None
         self.game = game
         self.counter = 1
@@ -338,11 +336,11 @@ class Player:
     def add_hand_to_play_queue(self, hand):
         self.queue.appendleft(hand)
 
-    def play(self):
+    def play(self, deck):
         self.queue = deque(self.hands)
         while len(self.queue) > 0:
             hand = self.queue.popleft()
-            hand.play(self.deck)
+            hand.play(deck)
 
     def show_all_players(self):
         for player in self.game.players:
@@ -350,12 +348,12 @@ class Player:
                 hand.show_player()
 
     def __eq__(self, other):
-        return (self.name == other.name) and (self.deck == other.deck) and (self.game == other.game)
+        return (self.name == other.get_name()) and (self.game == other.game)
 
 
 class Game:
     def __init__(self, stdscr):
-        self.Display = Display(stdscr)
+        self.display_object = Display(stdscr)
         self.deck = Deck()
         self.deck.shuffle()
         self.players = []
@@ -364,10 +362,10 @@ class Game:
         return self.deck
 
     def get_display(self):
-        return self.Display
+        return self.display_object
 
     def create_player(self, player_name):
-        a_player = Player(player_name, self.deck, self)
+        a_player = Player(player_name, self)
         self.players.append(a_player)
         return a_player
 
@@ -379,7 +377,7 @@ class Game:
 
     def initialize_player(self, player_name):
         a_player = self.create_player(player_name)
-        a_player_hand = a_player.create_hand(player_name, self.Display)
+        a_player_hand = a_player.create_hand(player_name, self.display_object)
         a_player_hand.draw(self.deck, 2)
         return a_player, a_player_hand
 
@@ -389,15 +387,15 @@ class Game:
         dealer, dealer_hand = self.initialize_player('dealer')
         dealer_hand.display_one_card()
         # play both players
-        player1.play()
-        dealer.play()
+        for player in self.players:
+            player.play(self.deck)
         # decide result by comparing dealer hand with each player's hand
         for self.number, hand in enumerate(player1.get_all_hands()):
-            self.Display.display_decide(self.number, f'Result for {hand.get_name()}')
+            self.display_object.display_decide(self.number, f'Result for {hand.get_name()}')
             self.decide(dealer_hand, hand)
 
     def decide(self, h1, h2):
-        self.Display.display_decide(self.number, f'{h1.decide(h2)}', 1)
+        self.display_object.display_decide(self.number, f'{h1.decide(h2)}', 1)
 
 
 def main(stdscr):
