@@ -21,17 +21,17 @@ class Display:
             self.stdscr.addstr(y + b, x + 6, symbol)
         self.refresh()
 
-    def display_card_symbol(self, y, x):
-        self.stdscr.addstr(y + 1, x + 1, self.value)
-        self.stdscr.addstr(y + 1, x + 1 + len(str(self.value)), self.SUIT_CHR[self.suit])
-        self.stdscr.addstr(y + 5, x + 5 - len(str(self.value)), self.value)
-        self.stdscr.addstr(y + 5, x + 5, self.SUIT_CHR[self.suit])
+    def display_card_symbol(self, y, x, value, suit):
+        self.stdscr.addstr(y + 1, x + 1, value)
+        self.stdscr.addstr(y + 1, x + 1 + len(str(value)), self.SUIT_CHR[suit])
+        self.stdscr.addstr(y + 5, x + 5 - len(str(value)), value)
+        self.stdscr.addstr(y + 5, x + 5, self.SUIT_CHR[suit])
         self.refresh()
 
-    def clear_card_symbol(self, y, x):
+    def clear_card_symbol(self, y, x, card_object):
         self.stdscr.addstr(y + 1, x + 1, ' ')
-        self.stdscr.addstr(y + 1, x + 1 + len(str(self.value)), ' ')
-        self.stdscr.addstr(y + 5, x + 5 - len(str(self.value)), ' ')
+        self.stdscr.addstr(y + 1, x + 1 + len(str(card_object.get_value())), ' ')
+        self.stdscr.addstr(y + 5, x + 5 - len(str(card_object.get_value())), ' ')
         self.stdscr.addstr(y + 5, x + 5, ' ')
         self.refresh()
 
@@ -58,10 +58,10 @@ class Display:
         self.stdscr.refresh()
 
     def display_card(self, y, x, card):
-        self.value =card.get_value()
-        self.suit = card.get_suit()
+        value =card.get_value()
+        suit = card.get_suit()
         self.display_card_skeleton(y * 7, x * 7)
-        self.display_card_symbol(y * 7, x * 7)
+        self.display_card_symbol(y * 7, x * 7, value, suit)
         self.refresh()
 
 class Card:
@@ -173,7 +173,7 @@ class Hand:
         self.card_count = 2
         self.already_displayed.append(self.cards[0])
         self.display_object.display_card_skeleton(y, 14, ' ')
-        self.display_object.clear_card_symbol(y, 14)
+        self.display_object.clear_card_symbol(y, 14, self.cards[1])
 
     def arrow(self, y):
         for x in range(6):
@@ -263,12 +263,11 @@ class Hand:
         return (len(self.cards) == 2) and (self.get_card_value(0) == self.get_card_value(1))
 
     def split(self):
-        if not self.splittable():
-            return
+        # if not self.splittable():
+        #     return
         first_card, second_card = self.cards
-        self.cards = [first_card]
-        self.already_displayed.remove(second_card)
-        new_hand = self.player.create_hand('sp' + str(self.player.counter), self.display_object)
+        new_hand = Player('sp' + str(self.player.counter)).create_hand(self.display_object)
+        self.player.hands.append(new_hand)
         self.player.counter += 1
         if self.name == 'dealer':
             self.display_and_replace(7 * 0)
@@ -280,6 +279,8 @@ class Hand:
             self.display_and_replace(7 * 4)
         elif self.name == 'player1':
             self.display_and_replace(7 * 1)
+        self.cards = [first_card]
+        self.already_displayed.remove(second_card)
         new_hand.add_card(second_card)
         self.player.add_hand_to_play_queue(new_hand)
         new_hand.display()
