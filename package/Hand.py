@@ -158,9 +158,9 @@ class Hand:
         if not self.splittable():
             return
         first_card, second_card = self.cards
-        new_hand = Player('sp' + str(self.player.counter)).create_hand(self.display_object)
+        new_hand = Player('sp' + str(self.player.get_counter())).create_hand(self.display_object)
         self.player.hands.append(new_hand)
-        self.player.counter += 1
+        # self.player.counter += 1
         if self.name == 'dealer':
             self.display_and_replace(0)
         elif self.name == 'player1':
