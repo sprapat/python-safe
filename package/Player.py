@@ -7,10 +7,14 @@ class Player:
         self.name = player_name
         self.hands = []
         self.queue = None
-        self.counter = 1
+        self.counter = 0
 
     def get_name(self):
         return self.name
+
+    def get_counter(self):
+        self.counter += 1
+        return self.counter
 
     def create_hand(self, display):
         a_hand = Hand(self, display)

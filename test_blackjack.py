@@ -28,6 +28,7 @@ def test_get_suit():
     assert card_object.get_suit() == 'S'
     card_object = Card('K','D')
     assert card_object.get_suit() == 'D'
+
 def test_get_score():
     card_object = Card('K','S')
     assert card_object.get_score() == 10
@@ -242,6 +243,11 @@ def test_create_player():
     game_object = Game('stdscr')
     player_object = Player('Player1')
     assert game_object.create_player('Player1') == player_object
+
+def test_get_counter():
+    player_object = Player('Player1')
+    assert player_object.get_counter() == 1
+    assert player_object.get_counter() == 2
 
 def test_game_get_player():
     game_object = Game('stdscr')
