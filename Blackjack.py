@@ -183,14 +183,14 @@ class Hand:
     def display(self):
         if self.name == 'dealer':
             self.display_formula(0)
+        elif self.name == 'player1':
+            self.display_formula(1)
         elif self.name == 'sp1':
             self.display_formula(2)
         elif self.name == 'sp2':
             self.display_formula(3)
         elif self.name == 'sp3':
             self.display_formula(4)
-        elif self.name == 'player1':
-            self.display_formula(1)
 
     def check_in_list(self, list, element):
         for e in list:
@@ -270,15 +270,16 @@ class Hand:
         self.player.hands.append(new_hand)
         self.player.counter += 1
         if self.name == 'dealer':
-            self.display_and_replace(7 * 0)
+            self.display_and_replace(0)
+        elif self.name == 'player1':
+            self.display_and_replace(7 * 1)
         elif self.name == 'sp1':
             self.display_and_replace(7 * 2)
         elif self.name == 'sp2':
             self.display_and_replace(7 * 3)
         elif self.name == 'sp3':
             self.display_and_replace(7 * 4)
-        elif self.name == 'player1':
-            self.display_and_replace(7 * 1)
+
         self.cards = [first_card]
         self.already_displayed.remove(second_card)
         new_hand.add_card(second_card)
