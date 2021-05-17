@@ -13,9 +13,6 @@ class Player:
     def get_name(self):
         return self.name
 
-    def get_value(self, index, card):
-        self.hands[index].get_value(card)
-
     def create_hand(self, display):
         self.a_hand = Hand(self, display)
         self.hands.append(self.a_hand)
@@ -43,4 +40,4 @@ class Player:
                 hand.show_player()
 
     def __eq__(self, other):
-        return (self.name == other.get_name())
+        return (other != None) and (self.name == other.get_name())

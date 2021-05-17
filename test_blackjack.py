@@ -64,7 +64,7 @@ def test_get_player():
     player_object = Player('Player1')
     assert Hand(player_object, 'None').get_player() == player_object
 
-def test_get_name():
+def test_hand_get_name():
     player_object = Player('Player1')
     assert Hand(player_object, 'None').get_name() == 'Player1'
 
@@ -243,11 +243,12 @@ def test_create_player():
     player_object = Player('Player1')
     assert game_object.create_player('Player1') == player_object
 
-def test_get_player():
+def test_game_get_player():
     game_object = Game('stdscr')
     player_object = Player('Player1')
     game_object.create_player('Player1')
     assert game_object.get_player('Player1') == player_object
+    assert not game_object.get_player('Player') == player_object
 
 def test_initualize_player():
     game_object = Game('stdscr')

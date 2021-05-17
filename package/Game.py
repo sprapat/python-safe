@@ -25,7 +25,6 @@ class Game:
         for player in self.players:
             if player.name == player_name:
                 return player
-        return None
 
     def initialize_player(self, player_name):
         a_player = self.create_player(player_name)
