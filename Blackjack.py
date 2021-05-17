@@ -106,10 +106,10 @@ class Deck:
 
 
 class Hand:
-    def __init__(self, name, player, display):
+    def __init__(self, player, display):
         self.cards = []
-        self.name = name
         self.player = player
+        self.name = self.player.name
         self.card_count = 1
         self.display_object = display
         self.already_displayed = []
@@ -223,8 +223,8 @@ class Hand:
         self.already_displayed.append(self.cards[0])
         self.display_object.display_card_skeleton(0, 14)
 
-    def play(self, deck):
-        self.player.show_all_players()
+    def play(self, deck, game):
+        self.player.show_all_players(game)
         if self.name == 'dealer':
             self.arrow(3)
         elif self.name == 'sp1':
@@ -307,11 +307,11 @@ class Hand:
 
 
 class Player:
-    def __init__(self, player_name, game):
+    def __init__(self, player_name):
         self.name = player_name
         self.hands = []
         self.queue = None
-        self.game = game
+        # self.game = game
         self.counter = 1
         self.a_hand = None
 
@@ -322,7 +322,7 @@ class Player:
         self.hands[index].get_value(card)
 
     def create_hand(self, name, display):
-        self.a_hand = Hand(name, self, display)
+        self.a_hand = Hand(self, display)
         self.hands.append(self.a_hand)
         return self.a_hand
 
@@ -336,19 +336,19 @@ class Player:
     def add_hand_to_play_queue(self, hand):
         self.queue.appendleft(hand)
 
-    def play(self, deck):
+    def play(self, deck, game):
         self.queue = deque(self.hands)
         while len(self.queue) > 0:
             hand = self.queue.popleft()
-            hand.play(deck)
+            hand.play(deck, game)
 
-    def show_all_players(self):
-        for player in self.game.players:
+    def show_all_players(self, game):
+        for player in game.players:
             for hand in player.hands:
                 hand.show_player()
 
     def __eq__(self, other):
-        return (self.name == other.get_name()) and (self.game == other.game)
+        return (self.name == other.get_name())
 
 
 class Game:
@@ -365,7 +365,7 @@ class Game:
         return self.display_object
 
     def create_player(self, player_name):
-        a_player = Player(player_name, self)
+        a_player = Player(player_name)
         self.players.append(a_player)
         return a_player
 
@@ -388,7 +388,7 @@ class Game:
         dealer_hand.display_one_card()
         # play both players
         for player in self.players:
-            player.play(self.deck)
+            player.play(self.deck, self)
         # decide result by comparing dealer hand with each player's hand
         for self.number, hand in enumerate(player1.get_all_hands()):
             self.display_object.display_decide(self.number, f'Result for {hand.get_name()}')
