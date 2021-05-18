@@ -1,4 +1,5 @@
 class Hand:
+    """Represent a hand of a player"""
     def __init__(self, player, display, name = None):
         self.cards = []
         self.player = player
@@ -119,6 +120,7 @@ class Hand:
         self.display_object.display_card_skeleton(0, 14)
 
     def play(self, deck, game):
+        """Key method to play game"""
         if self.name == 'dealer':
             self.arrow(3)
         elif self.name == 'player1':

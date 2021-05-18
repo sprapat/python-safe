@@ -5,10 +5,16 @@ from time import sleep
 
 
 class Game:
+    """Main class for game play"""
     def __init__(self, stdscr):
+        # Main class for display everything on screen
         self.display_object = Display(stdscr)
+
+        # initialize deck
         self.deck = Deck()
         self.deck.shuffle()
+        
+        # keep list of players
         self.players = []
 
     def get_deck(self):
