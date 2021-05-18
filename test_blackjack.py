@@ -81,7 +81,7 @@ def test_Hand_draw():
     hand_object.draw(Deck(), 1)
     assert hand_object.cards[0] == Card('A','C')
 
-def test_get_score():
+def test__player_get_score():
     player_object = Player('Player1')
     hand_object = Hand(player_object, 'None')
     hand_object.cards = [Card('A','S'), Card('10','S')]
@@ -156,6 +156,7 @@ def test_check_in_list():
     player_object = Player('Player1')
     assert Hand(player_object, 'None').check_in_list(list, 'a') == True
     assert Hand(player_object, 'None').check_in_list(list, 'd') == False
+
 def test_decide():
     player_object = Player('Player1')
     dealer_object = Player('Dealer')
@@ -263,3 +264,9 @@ def test_initualize_player():
     p, h = game_object.initialize_player('Player1')
     assert p == player_object
     assert h == hand_object
+
+
+def test_get_count():
+    assert Card('10','S').get_count() == -1
+    assert Card('7','S').get_count() == 0
+    assert Card('4','S').get_count() == 1
