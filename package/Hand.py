@@ -1,8 +1,11 @@
 class Hand:
-    def __init__(self, player, display):
+    def __init__(self, player, display, name = None):
         self.cards = []
         self.player = player
-        self.name = self.player.name
+        if type(name) == str:
+            self.name = name
+        else:
+            self.name = self.player.get_name()
         self.card_count = 1
         self.display_object = display
         self.already_displayed = []
@@ -45,7 +48,7 @@ class Hand:
         for c in self.cards:
             if c.get_value() == 'A' and sum_score > 21:
                 sum_score -= 10
-        self.display_text(str(sum_score), '', 4)
+        self.display_text(str(sum_score) + ' ', '', 4)
         return sum_score if sum_score <= 21 else -999
 
     def get_card_value(self, card_idx):
@@ -116,7 +119,6 @@ class Hand:
         self.display_object.display_card_skeleton(0, 14)
 
     def play(self, deck, game):
-        self.player.show_all_players(game)
         if self.name == 'dealer':
             self.arrow(3)
         elif self.name == 'player1':
@@ -127,6 +129,7 @@ class Hand:
             self.arrow(24)
         elif self.name == 'sp3':
             self.arrow(31)
+        self.player.show_all_players(game)
         while not (self.is_busted()) and not (self.is_blackjack()):
             self.display()
             self.display_object.display_text_times_seven(5, 'want to draw?')
@@ -147,7 +150,6 @@ class Hand:
         self.display()
         self.clear_arrow()
         self.is_blackjack()
-
     def make_card(self, card):
         self.cards = [card]
 
@@ -157,9 +159,7 @@ class Hand:
     def split(self):
         if not self.splittable():
             return
-        first_card, second_card = self.cards
-        new_hand = Player('sp' + str(self.player.get_counter())).create_hand(self.display_object)
-        self.player.hands.append(new_hand)
+        new_hand = Hand(self.player, self.display_object, 'sp' + str(self.player.get_counter()))
         if self.name == 'dealer':
             self.display_and_replace(0)
         elif self.name == 'player1':
@@ -170,11 +170,13 @@ class Hand:
             self.display_and_replace(7 * 3)
         elif self.name == 'sp3':
             self.display_and_replace(7 * 4)
-
+        first_card = self.cards[0]
+        second_card = self.cards[1]
         self.cards = [first_card]
         self.already_displayed.remove(second_card)
         new_hand.add_card(second_card)
         self.player.add_hand_to_play_queue(new_hand)
+        self.player.hands.append(new_hand)
         new_hand.display()
         new_hand.show_player()
 

@@ -1,6 +1,7 @@
 from .Display import Display
 from .Deck import Deck
 from .Player import Player
+from time import sleep
 
 
 class Game:
@@ -33,17 +34,22 @@ class Game:
         return a_player, a_player_hand
 
     def play(self):
-        # initialize both players
-        player1, player1_hand = self.initialize_player('player1')
-        dealer, dealer_hand = self.initialize_player('dealer')
-        dealer_hand.display_one_card()
-        # play both players
-        for player in self.players:
-            player.play(self.deck, self)
-        # decide result by comparing dealer hand with each player's hand
-        for self.number, hand in enumerate(player1.get_all_hands()):
-            self.display_object.display_decide(self.number, f'Result for {hand.get_name()}')
-            self.decide(dealer_hand, hand)
+        while self.deck.get_deck_left() > 0:
+            # initialize both players
+            player1, player1_hand = self.initialize_player('player1')
+            dealer, dealer_hand = self.initialize_player('dealer')
+            dealer_hand.display_one_card()
+            player1_hand.display()
+            # play both players
+            for player in self.players:
+                player.play(self.deck, self)
+            # decide result by comparing dealer hand with each player's hand
+            for self.number, hand in enumerate(player1.get_all_hands()):
+                self.display_object.display_decide(self.number, f'Result for {hand.get_name()}')
+                self.decide(dealer_hand, hand)
+            sleep(3)
+            self.display_object.clear()
+            self.players = []
 
     def decide(self, h1, h2):
         self.display_object.display_decide(self.number, f'{h1.decide(h2)}', 1)
