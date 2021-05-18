@@ -76,14 +76,19 @@ class Hand:
     def display(self):
         if self.name == 'dealer':
             self.display_formula(0)
+            self.arrow(3)
         elif self.name == 'player1':
             self.display_formula(1)
+            self.arrow(10)
         elif self.name == 'sp1':
             self.display_formula(2)
+            self.arrow(17)
         elif self.name == 'sp2':
             self.display_formula(3)
+            self.arrow(24)
         elif self.name == 'sp3':
             self.display_formula(4)
+            self.arrow(31)
 
     def check_in_list(self, list, element):
         for e in list:
@@ -117,16 +122,6 @@ class Hand:
 
     def play(self, deck, game):
         self.player.show_all_players(game)
-        if self.name == 'dealer':
-            self.arrow(3)
-        elif self.name == 'player1':
-            self.arrow(10)
-        elif self.name == 'sp1':
-            self.arrow(17)
-        elif self.name == 'sp2':
-            self.arrow(24)
-        elif self.name == 'sp3':
-            self.arrow(31)
         while not (self.is_busted()) and not (self.is_blackjack()):
             self.display()
             self.display_object.display_text_times_seven(5, 'want to draw?')
