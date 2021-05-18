@@ -48,11 +48,8 @@ class Game:
                 self.display_object.display_decide(self.number, f'Result for {hand.get_name()}')
                 self.decide(dealer_hand, hand)
             sleep(3)
-            self.clean()
-
-    def clean(self):
-        self.display_object.clear()
-        self.players = []
+            self.display_object.clear()
+            self.players = []
 
     def decide(self, h1, h2):
         self.display_object.display_decide(self.number, f'{h1.decide(h2)}', 1)
