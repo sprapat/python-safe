@@ -48,7 +48,7 @@ class Hand:
         for c in self.cards:
             if c.get_value() == 'A' and sum_score > 21:
                 sum_score -= 10
-        self.display_text(str(sum_score), '', 4)
+        self.display_text(str(sum_score) + ' ', '', 4)
         return sum_score if sum_score <= 21 else -999
 
     def get_card_value(self, card_idx):
