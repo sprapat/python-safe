@@ -2,7 +2,7 @@ class Hand:
     def __init__(self, player, display):
         self.cards = []
         self.player = player
-        self.name = self.player.name
+        self.name = self.player.get_name()
         self.card_count = 1
         self.display_object = display
         self.already_displayed = []
@@ -157,7 +157,6 @@ class Hand:
     def split(self):
         if not self.splittable():
             return
-        first_card, second_card = self.cards
         new_hand = Player('sp' + str(self.player.get_counter())).create_hand(self.display_object)
         self.player.hands.append(new_hand)
         if self.name == 'dealer':
@@ -170,7 +169,8 @@ class Hand:
             self.display_and_replace(7 * 3)
         elif self.name == 'sp3':
             self.display_and_replace(7 * 4)
-
+        first_card = self.cards[0]
+        second_card = self.cards[1]
         self.cards = [first_card]
         self.already_displayed.remove(second_card)
         new_hand.add_card(second_card)
