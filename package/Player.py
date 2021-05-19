@@ -32,6 +32,7 @@ class Player:
         self.queue.appendleft(hand)
 
     def play(self, deck, game):
+        self.game = game
         self.queue = deque(self.hands)
         while len(self.queue) > 0:
             hand = self.queue.popleft()

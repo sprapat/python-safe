@@ -14,4 +14,9 @@ class Deck:
         random.shuffle(self.cards)
 
     def draw(self, number_of_cards):
-        return [self.cards.pop(0) for c in range(number_of_cards)]
+        if self.cards:
+            return [self.cards.pop(0) for c in range(number_of_cards)]
+        return []
+
+    def get_deck_left(self):
+        return len(self.cards)

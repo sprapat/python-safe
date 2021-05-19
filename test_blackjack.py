@@ -245,11 +245,6 @@ def test_create_player():
     player_object = Player('Player1')
     assert game_object.create_player('Player1') == player_object
 
-def test_get_counter():
-    player_object = Player('Player1')
-    assert player_object.get_counter() == 1
-    assert player_object.get_counter() == 2
-
 def test_game_get_player():
     game_object = Game('stdscr')
     player_object = Player('Player1')
@@ -264,9 +259,3 @@ def test_initualize_player():
     p, h = game_object.initialize_player('Player1')
     assert p == player_object
     assert h == hand_object
-
-
-def test_get_count():
-    assert Card('10','S').get_count() == -1
-    assert Card('7','S').get_count() == 0
-    assert Card('4','S').get_count() == 1
