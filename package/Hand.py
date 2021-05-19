@@ -31,8 +31,12 @@ class Hand:
     def get_name(self):
         return self.name
 
+    def display_running_count(self, deck):
+        self.display_object.display_count(deck.update_count())
+
     def draw(self, deck, number_of_cards):
         self.cards.extend(deck.draw(number_of_cards))
+        # deck.display_count()
 
     def is_blackjack(self):
         if len(self.cards) != 2:
@@ -133,6 +137,7 @@ class Hand:
             self.arrow(31)
         self.player.show_all_players(game)
         while not (self.is_busted()) and not (self.is_blackjack()):
+            self.display_running_count(deck)
             self.display()
             self.display_object.display_text_times_seven(5, 'want to draw?')
             self.get_score()

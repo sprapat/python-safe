@@ -80,16 +80,27 @@ def test_add_card():
 def test_Hand_draw():
     player_object = Player('Player1')
     hand_object = Hand(player_object, 'None')
-    hand_object.draw(Deck(), 1)
+    hand_object.cards.extend(Deck().draw(1))
+    # hand_object.draw(Deck(), 1)
     assert hand_object.cards[0] == Card('A','C')
 
-def test__player_get_score():
+def test_Player_get_score():
     player_object = Player('Player1')
     hand_object = Hand(player_object, 'None')
     hand_object.cards = [Card('A','S'), Card('10','S')]
     assert hand_object.get_score() == 21
     hand_object.cards = [Card('A','S'), Card('10','S'), Card('A','C')]
     assert hand_object.get_score() == 12
+
+def test_update_count():
+    deck  = Deck()
+    deck.drawn = [Card('A','S'), Card('7','S')]
+    assert deck.update_count() == -1
+    deck.drawn = [Card('A','S'), Card('3','S')]
+    assert deck.update_count() == 0
+    deck.drawn = [Card('4','S'), Card('7','S')]
+    assert deck.update_count() == 1
+
 
 def test_is_blackjack():
     player_object = Player('Player1')
@@ -247,11 +258,6 @@ def test_create_player():
     player_object = Player('Player1')
     assert game_object.create_player('Player1') == player_object
 
-def test_get_counter():
-    player_object = Player('Player1')
-    assert player_object.get_counter() == 1
-    assert player_object.get_counter() == 2
-
 def test_game_get_player():
     game_object = Game('stdscr')
     player_object = Player('Player1')
@@ -266,9 +272,3 @@ def test_initualize_player():
     p, h = game_object.initialize_player('Player1')
     assert p == player_object
     assert h == hand_object
-
-
-def test_get_count():
-    assert Card('10','S').get_count() == -1
-    assert Card('7','S').get_count() == 0
-    assert Card('4','S').get_count() == 1

@@ -56,5 +56,9 @@ class Display:
         self.display_card_symbol(y * 7, x * 7, card.get_value(), card.get_suit())
         self.refresh()
 
+    def clear(self):
+        self.stdscr.clear()
+        self.refresh()
 
-    
+    def display_count(self, num):
+        self.display_text(0,40,f'Running count is: {num}  ')
