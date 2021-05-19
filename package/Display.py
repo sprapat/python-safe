@@ -60,4 +60,5 @@ class Display:
         self.stdscr.clear()
         self.refresh()
 
-    
+    def display_count(self, num):
+        self.display_text(0,40,f'Running count is: {num}  ')
